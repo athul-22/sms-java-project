@@ -1,8 +1,8 @@
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.border.Border;
 
 public class App implements ActionListener {
 
@@ -18,35 +18,28 @@ public class App implements ActionListener {
 
     App() {
         frame.setVisible(true);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setSize(800, 600); // Set an initial size for the frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Load and set the image with a specific size
-        ImageIcon originalImageIcon = new ImageIcon("lib/images/1.png");
-        Image originalImage = originalImageIcon.getImage();
-        Image scaledImage = originalImage.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
-        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
-        imageLabel = new JLabel(scaledImageIcon);
-
-        // Main frame background color
-        frame.getContentPane().setBackground(new Color(6, 206, 206));
 
         // Outer Panel with BorderLayout
         outerPanel.setLayout(new BorderLayout());
-        outerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        outerPanel.setBackground(Color.WHITE); // White background color
 
-        // Inner Panel with GridBagLayout
-        innerPanel.setLayout(new GridBagLayout());
-        innerPanel.setBackground(Color.white);
+        // Inner Panel with BorderLayout
+        innerPanel.setLayout(new BorderLayout());
+        innerPanel.setBackground(new Color(225,225,225)); // #cecece background color
+        innerPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100)); // 100-pixel gap
+
+        // Create a panel for login components
+        loginPanel.setLayout(new GridBagLayout());
+        loginPanel.setBackground(Color.WHITE);
+        imagePanel.setBackground(Color.WHITE);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Set the components to the left column
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER; // Center the components
         gbc.insets = new Insets(5, 5, 5, 5); // Adjusted insets for better spacing
-
-        // Create a panel for login components
-        loginPanel.setLayout(new GridBagLayout());
 
         // UID Text
         JLabel s = new JLabel("User ID: ");
@@ -56,9 +49,9 @@ public class App implements ActionListener {
 
         // UID TextBox
         gbc.gridy++;
-        uid.setPreferredSize(new Dimension(300, 50));
-        uid.setFont(new Font("Arial", Font.PLAIN, 17));
-        uid.setBorder(new RoundedBorder(20, Color.GRAY));
+        uid.setPreferredSize(new Dimension(300, 30));
+        uid.setFont(new Font("Arial", Font.PLAIN, 14));
+        uid.setBorder(new RoundedBorder(15, Color.WHITE)); // White border color
         loginPanel.add(uid, gbc);
 
         // Pw Box
@@ -69,41 +62,42 @@ public class App implements ActionListener {
         loginPanel.add(p, gbc);
 
         gbc.gridy++;
-        pw.setPreferredSize(new Dimension(300, 50));
-        pw.setFont(new Font("Arial", Font.PLAIN, 17));
-        pw.setBorder(new RoundedBorder(20, Color.GRAY));
+        pw.setPreferredSize(new Dimension(300, 30));
+        pw.setFont(new Font("Arial", Font.PLAIN, 14));
+        pw.setBorder(new RoundedBorder(15, Color.WHITE)); // White border color
         loginPanel.add(pw, gbc);
 
         // Log in button
         gbc.gridy++;
-        b1.setFont(new Font("Arial", Font.PLAIN, 17));
-        b1.setPreferredSize(new Dimension(300, 50));
-        b1.setBackground(new Color(0, 163, 255));
-        b1.setForeground(Color.white);
+        b1.setFont(new Font("Arial", Font.PLAIN, 16));
+        b1.setPreferredSize(new Dimension(200, 30));
+        b1.setBackground(Color.WHITE); // White background color
+        b1.setForeground(Color.black);
         b1.setBorderPainted(false);
         b1.setFocusPainted(false);
-        b1.setBorder(new RoundedBorder(20, new Color(0, 163, 255)));
+        b1.setBorder(new RoundedBorder(15, Color.WHITE)); // White border color
         b1.setOpaque(true);
+        b1.addActionListener(this);
         loginPanel.add(b1, gbc);
 
-        // Add the login panel to the left of the inner panel
-        innerPanel.add(loginPanel, gbc);
+        // Add the login panel to the center of the inner panel
+        innerPanel.add(loginPanel, BorderLayout.CENTER);
 
         // Panel for the image on the right side
         imagePanel.setLayout(new BorderLayout());
-        imagePanel.setBackground(Color.white);
+        // Load and set the image with a specific size
+        ImageIcon originalImageIcon = new ImageIcon("lib/images/1.png");
+        Image originalImage = originalImageIcon.getImage();
+        Image scaledImage = originalImage.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+        imageLabel = new JLabel(scaledImageIcon);
         imagePanel.add(imageLabel, BorderLayout.CENTER);
 
         // Add the image panel to the right of the inner panel
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridheight = GridBagConstraints.REMAINDER;
-        gbc.insets = new Insets(5, 20, 5, 5);  // Adjusted insets for better spacing
-        innerPanel.add(imagePanel, gbc);
+        innerPanel.add(imagePanel, BorderLayout.EAST);
 
         // Add the inner panel to the outer panel
-        innerPanel.setBorder(new RoundedBorder(40, Color.white));
-        outerPanel.add(innerPanel, BorderLayout.WEST);
+        outerPanel.add(innerPanel, BorderLayout.CENTER);
 
         // Add the outer panel to the frame
         frame.add(outerPanel);
@@ -115,7 +109,7 @@ public class App implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new App();
+        SwingUtilities.invokeLater(() -> new App());
     }
 }
 
